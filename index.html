@@ -13,60 +13,65 @@
     
     <style>
         :root {
-            /* --- LIGHT THEME VARIABLES --- */
-            --bg-color: #f3f4f6;
+            /* --- SUPER VIBRANT COLORS --- */
+            --blob-1: #a855f7; /* Electric Purple */
+            --blob-2: #3b82f6; /* Bright Blue */
+            --blob-3: #f43f5e; /* Hot Pink */
+            
+            /* --- LIGHT THEME --- */
+            --bg-color: #f0f9ff;
             --glass-surface: rgba(255, 255, 255, 0.65);
-            --glass-border: rgba(255, 255, 255, 0.9);
-            --text-main: #1e293b;
-            --text-sub: #64748b;
-            --primary-accent: #3b82f6;
+            --glass-border: rgba(255, 255, 255, 0.8);
+            --text-main: #0f172a;
+            --text-sub: #334155;
+            --primary-accent: #2563eb;
             --card-shadow: 0 10px 40px -10px rgba(0, 0, 0, 0.08);
-            --dock-bg: rgba(255, 255, 255, 0.8);
+            
+            /* DOCK & HEADER */
+            --dock-bg: rgba(255, 255, 255, 0.7);
             --dock-border: #ffffff;
-            --badge-bg: #dcfce7;
-            --badge-text: #166534;
-            --badge-border: #bbf7d0;
+            
+            /* STATUS COLORS (Vibrant Green) */
+            --status-green: #00e676;
+            --status-glow: rgba(0, 230, 118, 0.6);
+            --badge-bg: rgba(0, 230, 118, 0.1);
+            --badge-border: rgba(0, 230, 118, 0.3);
+            
             --contact-label-bg: #0f172a;
             --contact-label-text: #ffffff;
             --skill-item-bg: rgba(255,255,255,0.5);
-            
-            /* Aurora Colors (Light) */
-            --blob-1: #c084fc;
-            --blob-2: #60a5fa;
-            --blob-3: #f472b6;
         }
 
         [data-theme="dark"] {
-            /* --- DARK THEME VARIABLES --- */
+            /* --- DARK THEME --- */
             --bg-color: #020617;
             --glass-surface: rgba(30, 41, 59, 0.6);
             --glass-border: rgba(255, 255, 255, 0.1);
             --text-main: #f1f5f9;
             --text-sub: #94a3b8;
-            --primary-accent: #60a5fa;
+            --primary-accent: #38bdf8;
             --card-shadow: 0 10px 40px -10px rgba(0, 0, 0, 0.5);
+            
             --dock-bg: rgba(15, 23, 42, 0.8);
             --dock-border: rgba(255, 255, 255, 0.1);
-            --badge-bg: rgba(16, 185, 129, 0.15);
-            --badge-text: #34d399;
-            --badge-border: rgba(16, 185, 129, 0.3);
+            
+            /* NEON STATUS */
+            --status-green: #00ff80;
+            --status-glow: rgba(0, 255, 128, 0.6);
+            --badge-bg: rgba(0, 255, 128, 0.15);
+            --badge-border: rgba(0, 255, 128, 0.4);
+            
             --contact-label-bg: #ffffff;
             --contact-label-text: #020617;
             --skill-item-bg: rgba(255,255,255,0.05);
 
-            /* Aurora Colors (Dark - Neon Glow) */
-            --blob-1: #7e22ce;
-            --blob-2: #2563eb;
-            --blob-3: #db2777;
+            /* Neon Blobs */
+            --blob-1: #7c3aed;
+            --blob-2: #00d4ff;
+            --blob-3: #ff0055;
         }
 
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            /* Improved tap highlight for mobile */
-            -webkit-tap-highlight-color: transparent;
-        }
+        * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
 
         body {
             font-family: 'Plus Jakarta Sans', sans-serif;
@@ -75,209 +80,156 @@
             overflow-x: hidden;
             min-height: 100vh;
             padding-bottom: 140px;
-            /* Smooth theme transition */
             transition: background-color 0.3s ease, color 0.3s ease;
         }
 
-        /* --- Optimized Aurora Background (GPU Accelerated) --- */
+        /* --- Vivid Background --- */
         .aurora-container {
-            position: fixed;
-            top: 0; left: 0; width: 100%; height: 100%;
-            z-index: -1;
-            overflow: hidden;
-            /* Prevents painting issues on some browsers */
-            transform: translateZ(0); 
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1;
+            overflow: hidden; transform: translateZ(0);
         }
 
         .blob {
-            position: absolute;
-            border-radius: 50%;
-            filter: blur(80px);
-            opacity: 0.8;
-            will-change: transform; /* Tells browser to optimize */
-            animation: float 15s infinite alternate cubic-bezier(0.4, 0, 0.2, 1);
+            position: absolute; border-radius: 50%;
+            filter: blur(60px); opacity: 0.7; /* Increased opacity for colors */
+            will-change: transform;
+            animation: float 10s infinite alternate ease-in-out;
         }
 
         .blob-1 { top: -10%; left: -10%; width: 500px; height: 500px; background: var(--blob-1); }
         .blob-2 { bottom: 10%; right: -10%; width: 400px; height: 400px; background: var(--blob-2); animation-delay: -5s; }
-        .blob-3 { top: 40%; left: 40%; width: 300px; height: 300px; background: var(--blob-3); opacity: 0.6; animation-delay: -2s; }
+        .blob-3 { top: 40%; left: 40%; width: 300px; height: 300px; background: var(--blob-3); opacity: 0.5; animation-delay: -2s; }
 
         @keyframes float {
             0% { transform: translate3d(0, 0, 0) scale(1); }
             100% { transform: translate3d(30px, 40px, 0) scale(1.1); }
         }
 
-        /* --- Header & Toggle --- */
+        /* --- FLOATING CAPSULE HEADER --- */
         .header {
-            position: sticky;
-            top: 0;
+            position: fixed; /* Floating */
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
             z-index: 1000;
-            padding: 15px 20px;
-            background: var(--glass-surface);
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px); /* Safari Fix */
-            border-bottom: 1px solid var(--glass-border);
+            padding: 10px 20px;
+            width: 90%;
+            max-width: 600px;
+            border-radius: 50px; /* Round Shape */
+            background: var(--dock-bg);
+            backdrop-filter: blur(25px);
+            -webkit-backdrop-filter: blur(25px);
+            border: 1px solid var(--dock-border);
             display: flex;
             justify-content: center;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
             transition: background-color 0.3s ease;
         }
 
         .header-inner {
-            width: 100%;
-            max-width: 800px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
+            width: 100%; display: flex; justify-content: space-between; align-items: center;
         }
 
-        .logo { 
-            font-size: 24px; 
-            font-weight: 800; 
-            color: var(--text-main); 
-            letter-spacing: -0.5px;
-        }
+        .logo { font-size: 20px; font-weight: 800; color: var(--text-main); letter-spacing: -0.5px; }
         .logo span { color: var(--primary-accent); }
 
-        .header-actions {
-            display: flex;
-            align-items: center;
-            gap: 15px;
-        }
+        .header-actions { display: flex; align-items: center; gap: 10px; }
 
+        /* --- LIVE STATUS BAR --- */
         .status {
-            font-size: 13px;
-            font-weight: 600;
+            font-size: 12px; font-weight: 700;
             padding: 6px 14px;
             background: var(--badge-bg);
-            color: var(--badge-text);
-            border-radius: 20px;
+            color: var(--badge-text); /* Use specific color variable */
+            border-radius: 30px;
             border: 1px solid var(--badge-border);
-            display: flex;
-            align-items: center;
-            gap: 6px;
+            display: flex; align-items: center; gap: 8px;
+            box-shadow: 0 0 15px rgba(0, 230, 118, 0.15);
         }
         
-        .status-dot { width: 8px; height: 8px; background: var(--badge-text); border-radius: 50%; box-shadow: 0 0 5px var(--badge-text); }
-        
-        @media (max-width: 400px) {
-            .status span { display: none; }
-        }
+        .status span { color: var(--text-main); }
 
-        /* Theme Toggle Button */
-        .theme-btn {
-            background: transparent;
-            border: 1px solid var(--glass-border);
-            color: var(--text-main);
-            width: 40px;
-            height: 40px;
+        .status-dot {
+            width: 8px; height: 8px;
+            background: var(--status-green);
             border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            font-size: 18px;
-            transition: all 0.3s ease;
-        }
-        .theme-btn:hover {
-            background: var(--glass-border);
-            transform: rotate(15deg);
+            position: relative;
+            box-shadow: 0 0 10px var(--status-green);
         }
 
-        /* --- Container --- */
-        .container {
-            max-width: 800px;
-            margin: 40px auto 0;
-            padding: 0 20px;
+        /* Pulse Animation */
+        .status-dot::after {
+            content: ''; position: absolute;
+            top: 50%; left: 50%; transform: translate(-50%, -50%);
+            width: 100%; height: 100%;
+            border-radius: 50%;
+            border: 2px solid var(--status-green);
+            animation: pulse-green 1.5s infinite;
         }
 
-        /* --- Glass Cards --- */
+        @keyframes pulse-green {
+            0% { width: 100%; height: 100%; opacity: 1; }
+            100% { width: 300%; height: 300%; opacity: 0; }
+        }
+
+        @media (max-width: 380px) { .status span { display: none; } }
+
+        .theme-btn {
+            background: rgba(0,0,0,0.05); border: 1px solid var(--glass-border);
+            color: var(--text-main); width: 36px; height: 36px;
+            border-radius: 50%; display: flex; align-items: center; justify-content: center;
+            cursor: pointer; font-size: 16px; transition: 0.3s;
+        }
+        .theme-btn:hover { transform: rotate(20deg); background: rgba(0,0,0,0.1); }
+
+        /* --- Container (Pushed down because of floating header) --- */
+        .container { max-width: 800px; margin: 100px auto 0; padding: 0 20px; }
+
+        /* --- Hero --- */
+        .hero { text-align: center; padding: 20px 0 40px; }
+        h1 {
+            font-size: 48px; font-weight: 800; color: var(--text-main);
+            margin-bottom: 10px; line-height: 1.1;
+        }
+        .hero-title {
+            font-size: 18px; color: var(--primary-accent); font-weight: 600;
+            margin-bottom: 20px; text-transform: uppercase; letter-spacing: 1px;
+        }
+        .hero p {
+            font-size: 16px; color: var(--text-sub); max-width: 550px;
+            margin: 0 auto; line-height: 1.6;
+        }
+
+        /* --- Clear Cards --- */
         .card {
             background: var(--glass-surface);
             border: 1px solid var(--glass-border);
-            border-radius: 24px;
-            padding: 30px;
-            margin-bottom: 24px;
+            border-radius: 24px; padding: 30px; margin-bottom: 24px;
             box-shadow: var(--card-shadow);
-            backdrop-filter: blur(30px);
-            -webkit-backdrop-filter: blur(30px); /* Safari Fix */
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            backdrop-filter: blur(30px); -webkit-backdrop-filter: blur(30px);
+            transition: transform 0.3s;
         }
+        .card:hover { transform: translateY(-5px); border-color: var(--primary-accent); }
 
-        .card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 20px 50px -10px rgba(0, 0, 0, 0.15);
-            border-color: var(--primary-accent);
-        }
-
-        /* --- Hero --- */
-        .hero {
-            text-align: center;
-            padding: 50px 20px;
-            margin-bottom: 40px;
-        }
-
-        h1 {
-            font-size: 48px;
-            font-weight: 800;
-            color: var(--text-main);
-            line-height: 1.1;
-            margin-bottom: 10px;
-        }
-
-        .hero-title {
-            font-size: 18px;
-            color: var(--primary-accent);
-            font-weight: 600;
-            margin-bottom: 20px;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-        }
-
-        .hero p {
-            font-size: 16px;
-            color: var(--text-sub);
-            max-width: 550px;
-            margin: 0 auto;
-            line-height: 1.6;
-        }
-
-        /* --- Card Content --- */
         .card-header {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            margin-bottom: 20px;
-            padding-bottom: 15px;
-            border-bottom: 1px solid var(--glass-border);
+            display: flex; align-items: center; gap: 12px; margin-bottom: 20px;
+            padding-bottom: 15px; border-bottom: 1px solid var(--glass-border);
         }
-        
         .card-icon { font-size: 28px; }
         .card-title { font-size: 20px; font-weight: 700; color: var(--text-main); }
 
-        .grid-2 {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 15px;
-        }
+        .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
 
         .skill-item {
-            background: var(--skill-item-bg);
-            padding: 15px;
-            border-radius: 12px;
+            background: var(--skill-item-bg); padding: 15px; border-radius: 12px;
             border: 1px solid var(--glass-border);
         }
-        
         .skill-item h4 { font-size: 15px; margin-bottom: 5px; color: var(--text-main); display: flex; align-items: center; gap: 8px; }
         .skill-item p { font-size: 13px; color: var(--text-sub); }
 
-        /* --- Compact Info --- */
         .compact-info {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            background: var(--skill-item-bg);
-            padding: 12px;
-            border-radius: 10px;
+            display: flex; justify-content: space-between; align-items: center;
+            background: var(--skill-item-bg); padding: 12px; border-radius: 10px;
             margin-bottom: 8px;
         }
         .info-label { font-weight: 600; color: var(--text-main); }
@@ -285,91 +237,45 @@
 
         /* --- Dock --- */
         .dock-container {
-            position: fixed;
-            bottom: 30px;
-            left: 0;
-            width: 100%;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            z-index: 2000;
-            pointer-events: none; /* Allows clicking through empty space */
+            position: fixed; bottom: 30px; left: 0; width: 100%;
+            display: flex; flex-direction: column; align-items: center; z-index: 2000; pointer-events: none;
         }
-
-        .dock-container > * {
-            pointer-events: auto; /* Re-enable clicks on buttons */
-        }
+        .dock-container > * { pointer-events: auto; }
 
         .contact-label {
-            background: var(--contact-label-bg);
-            color: var(--contact-label-text);
-            padding: 8px 20px;
-            border-radius: 20px;
-            font-size: 13px;
-            font-weight: 600;
-            margin-bottom: 15px;
-            box-shadow: 0 10px 20px rgba(0,0,0,0.2);
-            animation: bounce 2s infinite;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-
-        @keyframes bounce {
-            0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-5px); }
+            background: var(--contact-label-bg); color: var(--contact-label-text);
+            padding: 8px 20px; border-radius: 20px; font-size: 13px; font-weight: 600;
+            margin-bottom: 15px; box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+            animation: bounce 2s infinite; display: flex; align-items: center; gap: 8px;
         }
 
         .dock {
-            background: var(--dock-bg);
-            backdrop-filter: blur(25px);
-            -webkit-backdrop-filter: blur(25px);
-            padding: 12px 20px;
-            border-radius: 24px;
-            display: flex;
-            gap: 20px;
-            box-shadow: 0 20px 50px rgba(0,0,0,0.2);
-            border: 1px solid var(--dock-border);
+            background: var(--dock-bg); backdrop-filter: blur(25px); -webkit-backdrop-filter: blur(25px);
+            padding: 12px 20px; border-radius: 24px; display: flex; gap: 20px;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.2); border: 1px solid var(--dock-border);
         }
 
         .dock-icon {
-            width: 50px;
-            height: 50px;
-            border-radius: 16px;
-            background: var(--skill-item-bg);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 22px;
-            color: var(--text-sub);
-            text-decoration: none;
-            transition: all 0.3s ease;
+            width: 50px; height: 50px; border-radius: 16px; background: var(--skill-item-bg);
+            display: flex; align-items: center; justify-content: center; font-size: 22px;
+            color: var(--text-sub); text-decoration: none; transition: 0.3s;
             border: 1px solid var(--glass-border);
         }
+        .dock-icon:hover { transform: scale(1.15) translateY(-5px); background: var(--text-main); color: var(--bg-color); }
 
-        .dock-icon:hover {
-            transform: scale(1.15) translateY(-5px);
-            background: var(--text-main);
-            color: var(--bg-color);
-        }
+        .tw:hover { background: #000; color: #fff; } 
+        .tg:hover { background: #26A5E4; color: #fff; } 
+        .dc:hover { background: #5865F2; color: #fff; } 
+        .em:hover { background: #ea4335; color: #fff; }
+        [data-theme="dark"] .tw:hover { background: #fff; color: #000; }
 
-        /* Hover colors */
-        .dock-icon.tw:hover { background: #000; color: #fff; }
-        .dock-icon.tg:hover { background: #26A5E4; color: #fff; }
-        .dock-icon.dc:hover { background: #5865F2; color: #fff; }
-        .dock-icon.em:hover { background: #ea4335; color: #fff; }
-        
-        [data-theme="dark"] .dock-icon.tw:hover { background: #fff; color: #000; }
-
-        @media (max-width: 600px) {
-            h1 { font-size: 36px; }
-            .grid-2 { grid-template-columns: 1fr; }
-            .dock { padding: 10px 15px; gap: 15px; }
-            .dock-icon { width: 45px; height: 45px; }
-        }
+        @keyframes bounce { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-5px); } }
+        @media (max-width: 600px) { h1 { font-size: 36px; } .grid-2 { grid-template-columns: 1fr; } .dock { padding: 10px 15px; gap: 15px; } .dock-icon { width: 45px; height: 45px; } }
     </style>
 </head>
-<body oncontextmenu="return false;"> <div class="aurora-container">
+<body oncontextmenu="return false;">
+
+    <div class="aurora-container">
         <div class="blob blob-1"></div>
         <div class="blob blob-2"></div>
         <div class="blob blob-3"></div>
