@@ -10,6 +10,8 @@
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Montserrat:wght@400;500;600;700;800;900&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Poppins:wght@300;400;500;600;700;800;900&family=Noto+Sans+JP:wght@400;700;900&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.5.1/css/all.min.css">
 <link rel="stylesheet" href="css/style.css">
+
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
 </head>
 <body>
 
@@ -523,18 +525,20 @@
     <div class="footer-divider"></div>
     <div class="footer-bottom">
       <div class="footer-copy">&copy; 2025 Maruf Hasan. All rights reserved.</div>
+      
       <div class="visitor-counter" id="visitorCounter">
         <div class="vc-item">
-          <span class="vc-label">Today</span>
-          <span class="vc-number" id="todayVisits">0</span>
+          <span class="vc-label">People</span>
+          <span class="vc-number" id="busuanzi_value_site_uv">Loading...</span>
         </div>
         <div class="vc-divider"></div>
         <div class="vc-item">
-          <span class="vc-label">Total</span>
-          <span class="vc-number" id="totalVisits">0</span>
+          <span class="vc-label">Views</span>
+          <span class="vc-number" id="busuanzi_value_site_pv">Loading...</span>
         </div>
         <div class="vc-live-dot"></div>
       </div>
+
     </div>
   </div>
 </footer>
@@ -544,83 +548,6 @@
 </button>
 
 <script src="js/main.js"></script>
-
-<script>
-  (function() {
-    // Unique ID for your website
-    const NAMESPACE = 'maruf-portfolio-final-v10';
-    const API_URL = 'https://api.counterapi.dev/v1';
-
-    // UI Elements
-    const todayEl = document.getElementById('todayVisits');
-    const totalEl = document.getElementById('totalVisits');
-
-    // --- 1. LOCAL STORAGE LOGIC (Works Instantly) ---
-    // This ensures you see the count increase immediately when YOU refresh.
-    
-    // Total Logic
-    let localTotal = localStorage.getItem('local_total') || 0;
-    localTotal = parseInt(localTotal) + 1;
-    localStorage.setItem('local_total', localTotal);
-    totalEl.innerText = localTotal;
-
-    // Today Logic
-    const todayDate = new Date().toISOString().slice(0, 10); // 2026-02-14
-    let storedDate = localStorage.getItem('local_date');
-    let localToday = localStorage.getItem('local_today') || 0;
-
-    if (storedDate !== todayDate) {
-        // New Day -> Reset
-        localToday = 1;
-        localStorage.setItem('local_date', todayDate);
-    } else {
-        // Same Day -> Increment
-        localToday = parseInt(localToday) + 1;
-    }
-    localStorage.setItem('local_today', localToday);
-    todayEl.innerText = localToday;
-
-
-    // --- 2. PUBLIC SERVER LOGIC (Background Sync) ---
-    // This connects to the internet to get the REAL count from everyone else.
-    // If the server has a higher number than your local, it updates the screen.
-    
-    async function syncPublicCounts() {
-        try {
-            // Keys
-            const keyTotal = 'total_views_main';
-            const keyToday = 'day_' + todayDate.replace(/-/g, '_');
-
-            // Hit Server
-            const resTotal = await fetch(`${API_URL}/${NAMESPACE}/${keyTotal}/up`);
-            const dataTotal = await resTotal.json();
-            
-            const resToday = await fetch(`${API_URL}/${NAMESPACE}/${keyToday}/up`);
-            const dataToday = await resToday.json();
-
-            // Update UI ONLY if server count is higher (meaning other people visited)
-            if (dataTotal.count > localTotal) {
-                totalEl.innerText = dataTotal.count;
-                // Sync local storage to match server
-                localStorage.setItem('local_total', dataTotal.count);
-            }
-
-            if (dataToday.count > localToday) {
-                todayEl.innerText = dataToday.count;
-                 // Sync local storage to match server
-                localStorage.setItem('local_today', dataToday.count);
-            }
-
-        } catch (e) {
-            console.log("Offline mode: showing local counts.");
-        }
-    }
-
-    // Run Public Sync in Background
-    syncPublicCounts();
-
-  })();
-</script>
 
 </body>
 </html>
